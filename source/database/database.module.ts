@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { DatabaseLogger } from './database.logger';
+
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -18,6 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           // eslint-disable-next-line unicorn/prefer-module
           __dirname + '/../**/*.entity.ts',
         ],
+        logger: new DatabaseLogger(),
         synchronize: true,
       }),
     }),
