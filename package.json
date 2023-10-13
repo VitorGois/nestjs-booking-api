@@ -12,9 +12,10 @@
     "preinstall": "npx only-allow pnpm",
     "build": "nest build",
     "dev": "tsnd --exit-child --rs --watch *.env --inspect=0.0.0.0:9229 ./source/main.ts",
-    "dev:postgres": "pnpm docker && pnpm dev",
+    "dev:postgres": "pnpm postgres && pnpm dev",
     "start": "node ./source/main.js || (cd dist && node ./source/main.js)",
     "docker": "docker compose up -d",
+    "postgres": "docker start postgres-hotel || docker run -d --name postgres-hotel -p 5432:5432 -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=admin postgres:15",
     "lint": "export TIMING=1 || set TIMING=1&& eslint **/*.ts --max-warnings=0",
     "test": "jest --coverage --forceExit --verbose --testTimeout=30000 --runInBand --config .config/jest/.jestrc.json"
   },

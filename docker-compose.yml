@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+    mem_limit: 400m
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+
+  postgres:
+    container_name: postgres-hotel
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    volumes:
+      - /data/postgres-hotel:/data/postgres-hotel
+    environment:
+      - postgres_user=admin
+      - postgres_password=admin
+      - postgres_db=webapp-hotel
+    networks:
+      - postgres-hotel
+ 
+  pgadmin:
+    links:
+      - postgres:postgres-hotel
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    volumes:
+      - /data/pgadmin:/root/.pgadmin
+    environment:
+      - pgadmin_default_email=admin@admin.com
+      - pgadmin_default_password=admin
+    networks:
+      - postgres-hotel
+ 
+networks:
+  postgres-hotel:
+    driver: bridge
