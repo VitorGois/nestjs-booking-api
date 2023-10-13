@@ -28,6 +28,6 @@ export class User extends OrmUuidTimestampEntity {
   public phone!: string;
 
   @Column({ type: 'timestamp' })
-  public birthdate!: Date;
+  public birthdate!: string;
 
 }
