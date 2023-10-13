@@ -30,8 +30,11 @@ dependencies:
     specifier: 0.14.0
     version: 0.14.0
   dayjs:
-    specifier: ^1.11.10
+    specifier: 1.11.10
     version: 1.11.10
+  express:
+    specifier: ^4.18.2
+    version: 4.18.2
   joi:
     specifier: 17.11.0
     version: 17.11.0
