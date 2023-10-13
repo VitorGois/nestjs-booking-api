@@ -20,7 +20,7 @@ services:
     environment:
       - postgres_user=admin
       - postgres_password=admin
-      - postgres_db=webapp-hotel
+      - postgres_db=booking-api
     networks:
       - postgres-hotel
  
