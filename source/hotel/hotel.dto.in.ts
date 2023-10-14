@@ -72,6 +72,6 @@ export class HotelUpdateDto {
 export class HotelIdReadDto {
 
   @IsUUID()
-  public id: string;
+  public hotelId: string;
 
 }

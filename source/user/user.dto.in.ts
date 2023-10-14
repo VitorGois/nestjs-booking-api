@@ -1,4 +1,4 @@
-import { IsEmail, IsISO8601, IsNotEmpty, IsNumberString, IsOptional, IsString, IsUUID, Length } from 'class-validator';
+import { IsEmail, IsISO8601, IsNotEmpty, IsNumberString, IsOptional, IsString, Length } from 'class-validator';
 
 import { OrmPageReadDto } from '../orm/orm.dto.in';
 
@@ -70,12 +70,5 @@ export class UserUpdateDto {
   @IsOptional()
   @IsISO8601()
   public birthdate?: string;
-
-}
-
-export class UserIdReadDto {
-
-  @IsUUID()
-  public id: string;
 
 }

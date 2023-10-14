@@ -150,6 +150,7 @@ export class HotelService {
     const hotel = await this.hotelRepository.findOneByOrFail({ id });
     await this.hotelRepository.remove(hotel);
     await this.addressRepository.remove(hotel.address);
+    // TODO: remove hotel rooms
   }
 
 }

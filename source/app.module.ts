@@ -5,6 +5,7 @@ import { BookingModule } from './booking/booking.module';
 import { ConfigAppModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
 import { HotelModule } from './hotel/hotel.module';
+import { HotelRoomModule } from './hotel-room/hotel-room.module';
 import { AppLoggerMiddleware } from './middleware/logger.middleware';
 import { RoomModule } from './room/room.module';
 import { UserModule } from './user/user.module';
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module';
     AddressModule,
     BookingModule,
     HotelModule,
+    HotelRoomModule,
     RoomModule,
     UserModule,
   ],

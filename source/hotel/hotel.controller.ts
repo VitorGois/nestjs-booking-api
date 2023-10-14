@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 
-import { HotelCreateDto, HotelIdReadDto, HotelPageReadDto, HotelUpdateDto } from './hotel.dto.in';
+import { OrmUuidReadDto } from '../orm/orm.dto.in';
+import { HotelCreateDto, HotelPageReadDto, HotelUpdateDto } from './hotel.dto.in';
 import { HotelDto, HotelPageDto } from './hotel.dto.out';
 import { HotelService } from './hotel.service';
 
@@ -22,18 +23,18 @@ export class HotelController {
   }
 
   @Get(':id')
-  public getHotelById(@Param() params: HotelIdReadDto): Promise<HotelDto> {
+  public getHotelById(@Param() params: OrmUuidReadDto): Promise<HotelDto> {
     return this.hotelService.readHotelById(params.id);
   }
 
   @Patch(':id')
-  public patchHotelById(@Param() params: HotelIdReadDto, @Body() body: HotelUpdateDto): Promise<HotelDto> {
+  public patchHotelById(@Param() params: OrmUuidReadDto, @Body() body: HotelUpdateDto): Promise<HotelDto> {
     return this.hotelService.updateHotelById(params.id, body);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public deleteHotelById(@Param() params: HotelIdReadDto): Promise<void> {
+  public deleteHotelById(@Param() params: OrmUuidReadDto): Promise<void> {
     return this.hotelService.deleteHotelById(params.id);
   }
 

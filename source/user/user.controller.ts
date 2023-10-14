@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 
-import { UserCreateDto, UserIdReadDto, UserPageReadDto, UserUpdateDto } from './user.dto.in';
+import { OrmUuidReadDto } from '../orm/orm.dto.in';
+import { UserCreateDto, UserPageReadDto, UserUpdateDto } from './user.dto.in';
 import { UserDto, UserPageDto } from './user.dto.out';
 import { UserService } from './user.service';
 
@@ -22,18 +23,18 @@ export class UserController {
   }
 
   @Get(':id')
-  public getUserById(@Param() params: UserIdReadDto): Promise<UserDto> {
+  public getUserById(@Param() params: OrmUuidReadDto): Promise<UserDto> {
     return this.userService.readUserById(params.id);
   }
 
   @Patch(':id')
-  public patchUserById(@Param() params: UserIdReadDto, @Body() body: UserUpdateDto): Promise<UserDto> {
+  public patchUserById(@Param() params: OrmUuidReadDto, @Body() body: UserUpdateDto): Promise<UserDto> {
     return this.userService.updateUserById(params.id, body);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public deleteUserById(@Param() params: UserIdReadDto): Promise<void> {
+  public deleteUserById(@Param() params: OrmUuidReadDto): Promise<void> {
     return this.userService.deleteUserById(params.id);
   }
 

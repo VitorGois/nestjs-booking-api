@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsBoolean, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
 
 import { OrmQueryOrder } from './orm.enum';
 
@@ -27,5 +27,12 @@ export class OrmPageReadDto {
   @IsOptional()
   @IsEnum(OrmQueryOrder)
   public order? = OrmQueryOrder.ASC;
+
+}
+
+export class OrmUuidReadDto {
+
+  @IsUUID()
+  public id!: string;
 
 }

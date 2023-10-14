@@ -13,6 +13,9 @@ import { HotelService } from './hotel.service';
   ],
   providers: [ HotelService ],
   controllers: [ HotelController ],
-  exports: [ HotelService ],
+  exports: [
+    HotelService,
+    TypeOrmModule,
+  ],
 })
 export class HotelModule { }
