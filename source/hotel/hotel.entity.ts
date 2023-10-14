@@ -11,10 +11,6 @@ export class Hotel extends OrmUuidTimestampEntity {
   @Column({ type: 'varchar', length: 255 })
   public name!: string;
 
-  @OneToOne(() => Address)
-  @JoinColumn({ name: 'address_id' })
-  public address!: Address;
-
   @Column({ type: 'varchar', length: 11 })
   public contact_phone!: string;
 
@@ -23,6 +19,10 @@ export class Hotel extends OrmUuidTimestampEntity {
     enum: HotelRating,
   })
   public rating!: HotelRating;
+
+  @OneToOne(() => Address, { nullable: false, eager: true, onDelete: 'CASCADE', cascade: true })
+  @JoinColumn({ name: 'address_id' })
+  public address!: Address;
 
   @OneToMany(() => Room, (room) => room.hotel)
   public rooms!: Room[];

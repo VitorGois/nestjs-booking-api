@@ -121,11 +121,8 @@ export class UserService {
    * @throws {BadRequestException} If the user with the specified ID is not found or if the deletion operation fails.
    */
   public async deleteUserById(id: string): Promise<void> {
-    const response = await this.userRepository.delete(id);
-
-    if (!response.affected) {
-      throw new BadRequestException(OrmException.ENTITY_NOT_FOUND);
-    }
+    const user = await this.userRepository.findOneByOrFail({ id });
+    await this.userRepository.remove(user);
   }
 
 }

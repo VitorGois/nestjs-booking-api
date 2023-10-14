@@ -1,4 +1,5 @@
-import { IsEmail, IsISO8601, IsNotEmpty, IsNumberString, IsObject, IsString, Length } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsEmail, IsISO8601, IsNotEmpty, IsNumberString, IsObject, IsString, Length, ValidateNested } from 'class-validator';
 
 import { OrmPageDto } from '../orm/orm.dto.out';
 import { UserIdReadDto } from './user.dto.in';
@@ -28,7 +29,8 @@ export class UserDto extends UserIdReadDto {
 
 export class UserPageDto extends OrmPageDto<UserDto> {
 
-  @IsObject({ each: true })
+  @IsObject() @Type(() => UserDto)
+  @ValidateNested({ each: true })
   public records: UserDto[];
 
 }
