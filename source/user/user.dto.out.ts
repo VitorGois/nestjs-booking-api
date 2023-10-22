@@ -1,34 +1,16 @@
+import { ApiProperty, IntersectionType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEmail, IsISO8601, IsNotEmpty, IsNumberString, IsObject, IsString, Length, ValidateNested } from 'class-validator';
+import { IsObject, ValidateNested } from 'class-validator';
 
 import { OrmPageDto } from '../orm/orm.dto.out';
 import { OrmUuidEntity } from '../orm/orm.entity';
+import { User } from './user.entity';
 
-export class UserDto extends OrmUuidEntity {
-
-  @IsString()
-  @IsNotEmpty()
-  public name!: string;
-
-  @IsEmail()
-  public email!: string;
-
-  @IsNumberString()
-  @Length(11, 14)
-  public taxId!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(11, 11)
-  public phone!: string;
-
-  @IsISO8601()
-  public birthdate!: string;
-
-}
+export class UserDto extends IntersectionType(OrmUuidEntity, PickType(User, [ 'name', 'email', 'taxId', 'phone', 'birthdate' ] as const)) { }
 
 export class UserPageDto extends OrmPageDto<UserDto> {
 
+  @ApiProperty({ isArray: true, type: UserDto })
   @IsObject() @Type(() => UserDto)
   @ValidateNested({ each: true })
   public records: UserDto[];
