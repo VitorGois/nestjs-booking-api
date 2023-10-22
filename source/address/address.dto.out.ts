@@ -1,27 +1,9 @@
-import { IsInt, IsNotEmpty, IsNumberString, IsOptional, IsPositive, IsString, Length } from 'class-validator';
+import { IntersectionType, PickType } from '@nestjs/swagger';
 
-import { AddressIdReadDto } from './address.dto.in';
+import { OrmUuidEntity } from '../orm/orm.entity';
+import { Address } from './address.entity';
 
-export class AddressDto extends AddressIdReadDto {
-
-  @IsString() @IsNotEmpty()
-  public street: string;
-
-  @IsOptional()
-  @IsInt() @IsPositive()
-  public number?: number;
-
-  @IsString() @IsNotEmpty()
-  public city: string;
-
-  @IsString() @IsNotEmpty()
-  public district: string;
-
-  @IsString() @IsNotEmpty()
-  public state: string;
-
-  @IsNumberString() @Length(8, 8)
-  public zipcode: string;
-
-}
-
+export class AddressDto extends IntersectionType(
+  OrmUuidEntity,
+  PickType(Address, [ 'street', 'number', 'district', 'city', 'state', 'zipcode' ] as const),
+) {}
