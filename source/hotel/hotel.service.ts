@@ -24,10 +24,13 @@ export class HotelService {
    * @returns The converted HotelDto.
    */
   private toDto(hotel: Hotel): HotelDto {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { createdAt, updatedAt, deletedAt, ...addressData } = hotel.address;
+
     return {
       id: hotel.id,
       name: hotel.name,
-      address: hotel.address,
+      address: addressData,
       contactPhone: hotel.contactPhone,
       rating: hotel.rating,
     };
@@ -139,12 +142,79 @@ export class HotelService {
   }
 
   /**
-   * TODO.
-   * @param id
+   * Deletes a hotel by its ID. The hotel is soft-deleted.
+   * @param id - The ID of the hotel to be deleted.
+   * @throws {NotFoundException} If the hotel with the provided ID is not found.
+   * @throws {InternalServerErrorException} If an error occurs during the deletion process.
+   * @returns A promise that resolves to void.
    */
-  public deleteHotelById(id: string): Promise<void> {
-    // TODO
-    return id as any;
+  public async deleteHotelById(id: string): Promise<void> {
+    const hotel = await this.hotelRepository.findOneByOrFail({ id });
+    await this.hotelRepository.softRemove(hotel);
+  }
+
+  /**
+   * Retrieves a list of soft-deleted hotels based on specified filters
+   * and pagination parameters and returns them as a HotelPageDto.
+   * @param params - Parameters for filtering and pagination.
+   * @throws {InternalServerErrorException} If an error occurs during the retrieval process.
+   * @returns A promise that resolves to the retrieved HotelPageDto.
+   */
+  public async readSoftDeletedHotel(params: HotelPageReadDto): Promise<HotelPageDto> {
+    const { name, contactPhone, rating, city, state, ...pageAndSort } = params;
+    const { page, perPage, sort, order, count } = pageAndSort;
+
+    let query = this.hotelRepository
+      .createQueryBuilder('hotel')
+      .withDeleted()
+      .leftJoinAndSelect('hotel.address', 'address')
+      .where('hotel.deletedAt IS NOT NULL');
+
+    if (name) query = query.andWhere('LOWER(name) LIKE LOWER(:name)', { name: `%${name}%` });
+    if (contactPhone) query = query.andWhere('contactPhone = :contactPhone', { contactPhone });
+    if (rating) query = query.andWhere('rating = :rating', { rating });
+    if (city) query = query.andWhere('LOWER(address.city) LIKE LOWER(:city)', { city: `%${city}%` });
+    if (state) query = query.andWhere('LOWER(address.state) LIKE LOWER(:state)', { state: `%${state}%` });
+    if (order && sort) query = query.orderBy(sort, order);
+
+    const offset = (page - 1) * perPage;
+    query = query.skip(offset).take(perPage);
+
+    const data = await query.getMany();
+    const total = await (count ? query.getCount() : undefined);
+
+    return {
+      page,
+      perPage,
+      count: total,
+      order,
+      sort,
+      records: data.map((d) => this.toDto(d)),
+    };
+  }
+
+  /**
+   * Restores a soft-deleted hotel by its ID.
+   * @param id - The ID of the hotel to be restored.
+   * @throws {NotFoundException} If the hotel with the provided ID is not found.
+   * @throws {InternalServerErrorException} If an error occurs during the restoration process.
+   * @returns A promise that resolves to the restored HotelDto.
+   */
+  public async restoreSoftDeletedHotelById(id: string): Promise<HotelDto> {
+    const hotel = await this.hotelRepository
+      .createQueryBuilder('hotel')
+      .withDeleted()
+      .leftJoinAndSelect('hotel.address', 'address')
+      .where('hotel.deletedAt IS NOT NULL')
+      .andWhere('hotel.id = :id', { id })
+      .getOneOrFail();
+
+    hotel.deletedAt = null;
+    hotel.address.deletedAt = null;
+
+    await this.hotelRepository.save(hotel);
+
+    return this.toDto(hotel);
   }
 
 }

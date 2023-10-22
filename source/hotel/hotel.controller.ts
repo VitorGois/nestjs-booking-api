@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query } from '@nestjs/common';
 
 import { OrmUuidReadDto } from '../orm/orm.dto.in';
 import { HotelCreateDto, HotelPageReadDto, HotelUpdateDto } from './hotel.dto.in';
@@ -22,6 +22,11 @@ export class HotelController {
     return this.hotelService.readHotel(query);
   }
 
+  @Get('deleted')
+  public getSoftDeletedHotel(@Query() query: HotelPageReadDto): Promise<HotelPageDto> {
+    return this.hotelService.readSoftDeletedHotel(query);
+  }
+
   @Get(':id')
   public getHotelById(@Param() params: OrmUuidReadDto): Promise<HotelDto> {
     return this.hotelService.readHotelById(params.id);
@@ -36,6 +41,11 @@ export class HotelController {
   @HttpCode(HttpStatus.NO_CONTENT)
   public deleteHotelById(@Param() params: OrmUuidReadDto): Promise<void> {
     return this.hotelService.deleteHotelById(params.id);
+  }
+
+  @Put(':id/restore')
+  public restoreSoftDeletedHotelById(@Param() params: OrmUuidReadDto): Promise<HotelDto> {
+    return this.hotelService.restoreSoftDeletedHotelById(params.id);
   }
 
 }

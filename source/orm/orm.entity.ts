@@ -1,4 +1,4 @@
-import { CreateDateColumn, Index, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { CreateDateColumn, DeleteDateColumn, Index, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export abstract class OrmTimestampEntity {
 
@@ -9,6 +9,10 @@ export abstract class OrmTimestampEntity {
   @Index()
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
   public updatedAt: Date;
+
+  @Index()
+  @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  public deletedAt: Date;
 
 }
 

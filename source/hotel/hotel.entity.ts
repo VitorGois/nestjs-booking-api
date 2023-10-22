@@ -25,7 +25,7 @@ export class Hotel extends OrmUuidTimestampEntity {
   @JoinColumn({ name: 'addressId' })
   public address!: Address;
 
-  @OneToMany(() => Room, (room) => room.hotel)
+  @OneToMany(() => Room, (room) => room.hotel, { onDelete: 'CASCADE', cascade: true })
   public rooms!: Room[];
 
   @OneToMany(() => Booking, (booking) => booking.hotel)

@@ -23,7 +23,7 @@ export class Room extends OrmUuidTimestampEntity {
   @JoinColumn({ name: 'hotelId' })
   public hotel: Hotel;
 
-  @OneToMany(() => Booking, (booking) => booking.user)
+  @OneToMany(() => Booking, (booking) => booking.user, { onDelete: 'CASCADE', cascade: true })
   public bookings: Booking[];
 
 }
