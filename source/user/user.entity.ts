@@ -1,10 +1,11 @@
-import { Column, Entity, Unique } from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
 
+import { Booking } from '../booking/booking.entity';
 import { OrmUuidTimestampEntity } from '../orm/orm.entity';
 
 @Entity()
 @Unique([ 'email' ])
-@Unique([ 'tax_id' ])
+@Unique([ 'taxId' ])
 export class User extends OrmUuidTimestampEntity {
 
   @Column({ type: 'varchar', length: 255 })
@@ -22,12 +23,15 @@ export class User extends OrmUuidTimestampEntity {
     length: 14,
     unique: true,
   })
-  public tax_id!: string;
+  public taxId!: string;
 
   @Column({ type: 'varchar', length: 11 })
   public phone!: string;
 
   @Column({ type: 'timestamp' })
   public birthdate!: string;
+
+  @OneToMany(() => Booking, (booking) => booking.user)
+  public bookings: Booking[];
 
 }

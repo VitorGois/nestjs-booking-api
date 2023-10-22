@@ -27,7 +27,7 @@ export class UserService {
       name: user.name,
       email: user.email,
       birthdate: user.birthdate,
-      tax_id: user.tax_id,
+      taxId: user.taxId,
       phone: user.phone,
     };
   }
@@ -65,14 +65,14 @@ export class UserService {
    *
    */
   public async readUser(params: UserPageReadDto): Promise<UserPageDto> {
-    const { name, email, tax_id, birthdate, phone, ...pageAndSort } = params;
+    const { name, email, taxId, birthdate, phone, ...pageAndSort } = params;
     const { page, perPage, sort, order, count } = pageAndSort;
 
     let query = this.userRepository.createQueryBuilder();
 
     if (name) query = query.andWhere('LOWER(name) ILIKE LOWER(:name)', { name: `%${name}%` });
     if (email) query = query.andWhere('LOWER(email) = LOWER(:email)', { email });
-    if (tax_id) query = query.andWhere('tax_id = :tax_id', { tax_id });
+    if (taxId) query = query.andWhere('tax_id = :tax_id', { taxId });
     if (birthdate) query = query.andWhere('birthdate = :birthdate', { birthdate });
     if (phone) query = query.andWhere('phone = :phone', { phone });
     if (order && sort) query = query.orderBy(sort, order);

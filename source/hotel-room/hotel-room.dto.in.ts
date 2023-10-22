@@ -7,10 +7,10 @@ import { OrmPageReadDto } from '../orm/orm.dto.in';
 export class HotelRoomCreateDto {
 
   @IsInt()
-  public single_bed: number;
+  public singleBed: number;
 
   @IsInt()
-  public double_bed: number;
+  public doubleBed: number;
 
   @IsInt()
   public number: number;
@@ -25,22 +25,22 @@ export class HotelRoomPageReadDto extends OrmPageReadDto {
   @IsOptional()
   @Transform(({ value }) => Number.parseInt(value as string))
   @IsInt()
-  public single_bed?: number;
+  public singleBed?: number;
 
   @IsOptional()
   @Transform(({ value }) => Number.parseInt(value as string))
   @IsInt()
-  public double_bed?: number;
+  public doubleBed?: number;
 
   @IsOptional()
   @Transform(({ value }) => Number.parseInt(value as string))
   @IsNumber({ maxDecimalPlaces: 2 })
-  public min_price?: number;
+  public minPrice?: number;
 
   @IsOptional()
   @Transform(({ value }) => Number.parseInt(value as string))
   @IsNumber({ maxDecimalPlaces: 2 })
-  public max_price?: number;
+  public maxPrice?: number;
 
 }
 
@@ -62,11 +62,11 @@ export class HotelRoomUpdateDto {
 
   @IsOptional()
   @IsInt()
-  public single_bed?: number;
+  public singleBed?: number;
 
   @IsOptional()
   @IsInt()
-  public double_bed?: number;
+  public doubleBed?: number;
 
   @IsOptional()
   @IsInt()

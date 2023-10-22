@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { Hotel } from '../hotel/hotel.entity';
 import { OrmUuidTimestampEntity } from '../orm/orm.entity';
@@ -10,30 +10,31 @@ import { BookingStatus } from './booking.enum';
 export class Booking extends OrmUuidTimestampEntity {
 
   @Column({ type: 'int2' })
-  public guests_number: number;
+  public guests!: number;
 
   @Column({ type: 'timestamp' })
-  public checkin_date: Date;
+  public checkInDate!: Date;
 
   @Column({ type: 'timestamp' })
-  public checkout_date: Date;
+  public checkoutDate!: Date;
 
   @Column({
-    type: 'enum',
-    enum: BookingStatus,
+    // type: 'enum',
+    type: 'varchar',
+    // enum: BookingStatus,
   })
-  public status: BookingStatus;
+  public status!: BookingStatus;
 
-  @OneToOne(() => User, { nullable: false })
-  @JoinColumn({ name: 'user_id' })
-  public user: User;
+  @ManyToOne(() => User, (user) => user.bookings, { nullable: false })
+  @JoinColumn({ name: 'userId' })
+  public user!: User;
 
-  @OneToOne(() => Hotel, { nullable: false })
-  @JoinColumn({ name: 'hotel_id' })
-  public hotel: Hotel;
+  @ManyToOne(() => Hotel, (hotel) => hotel.bookings, { nullable: false })
+  @JoinColumn({ name: 'hotelId' })
+  public hotel!: Hotel;
 
-  @OneToOne(() => Room, { nullable: false })
-  @JoinColumn({ name: 'room_id' })
-  public room: Room;
+  @ManyToOne(() => Room, (room) => room.bookings, { nullable: false })
+  @JoinColumn({ name: 'roomId' })
+  public room!: Room;
 
 }

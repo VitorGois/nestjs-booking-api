@@ -3,10 +3,10 @@ import { IsEnum, IsNotEmpty, IsNumberString, IsObject, IsString, Length, Validat
 
 import { AddressDto } from '../address/address.dto.out';
 import { OrmPageDto } from '../orm/orm.dto.out';
-import { HotelIdReadDto } from './hotel.dto.in';
+import { OrmUuidEntity } from '../orm/orm.entity';
 import { HotelRating } from './hotel.enum';
 
-export class HotelDto extends HotelIdReadDto {
+export class HotelDto extends OrmUuidEntity {
 
   @IsString() @IsNotEmpty()
   public name: string;
@@ -16,7 +16,7 @@ export class HotelDto extends HotelIdReadDto {
   public address: AddressDto;
 
   @IsNumberString() @Length(11, 11)
-  public contact_phone: string;
+  public contactPhone: string;
 
   @IsEnum(HotelRating)
   public rating: HotelRating;

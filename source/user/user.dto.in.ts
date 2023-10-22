@@ -13,7 +13,7 @@ export class UserCreateDto {
 
   @IsNumberString()
   @Length(11, 14)
-  public tax_id: string;
+  public taxId: string;
 
   @IsString()
   @IsNotEmpty()
@@ -38,7 +38,7 @@ export class UserPageReadDto extends OrmPageReadDto {
   @IsOptional()
   @IsNumberString()
   @Length(11, 14)
-  public tax_id?: string;
+  public taxId?: string;
 
   @IsOptional()
   @IsString() @IsNotEmpty()
@@ -60,7 +60,7 @@ export class UserUpdateDto {
   @IsOptional()
   @IsNumberString()
   @Length(11, 14)
-  public tax_id?: string;
+  public taxId?: string;
 
   @IsOptional()
   @IsString() @IsNotEmpty()

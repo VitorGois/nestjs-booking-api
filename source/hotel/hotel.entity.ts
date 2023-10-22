@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 
 import { Address } from '../address/address.entity';
+import { Booking } from '../booking/booking.entity';
 import { OrmUuidTimestampEntity } from '../orm/orm.entity';
 import { Room } from '../room/room.entity';
 import { HotelRating } from './hotel.enum';
@@ -12,7 +13,7 @@ export class Hotel extends OrmUuidTimestampEntity {
   public name!: string;
 
   @Column({ type: 'varchar', length: 11 })
-  public contact_phone!: string;
+  public contactPhone!: string;
 
   @Column({
     type: 'enum',
@@ -21,10 +22,13 @@ export class Hotel extends OrmUuidTimestampEntity {
   public rating!: HotelRating;
 
   @OneToOne(() => Address, { nullable: false, eager: true, onDelete: 'CASCADE', cascade: true })
-  @JoinColumn({ name: 'address_id' })
+  @JoinColumn({ name: 'addressId' })
   public address!: Address;
 
   @OneToMany(() => Room, (room) => room.hotel)
   public rooms!: Room[];
+
+  @OneToMany(() => Booking, (booking) => booking.hotel)
+  public bookings: Booking[];
 
 }

@@ -15,7 +15,7 @@
     "dev:postgres": "pnpm postgres && pnpm dev",
     "start": "node ./source/main.js || (cd dist && node ./source/main.js)",
     "docker": "docker compose up -d",
-    "postgres": "docker start postgres-hotel || docker run -d --name postgres-hotel -p 5432:5432 -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=admin postgres:15",
+    "postgres": "docker start postgres-hotel || docker run -d --name postgres-hotel -p 5432:5432 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=webapp-hotel postgres:15",
     "lint": "export TIMING=1 || set TIMING=1&& eslint **/*.ts --max-warnings=0",
     "test": "jest --coverage --forceExit --verbose --testTimeout=30000 --runInBand --config .config/jest/.jestrc.json"
   },
@@ -29,7 +29,7 @@
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
     "dayjs": "1.11.10",
-    "express": "^4.18.2",
+    "express": "4.18.2",
     "joi": "17.11.0",
     "pg": "8.11.3",
     "reflect-metadata": "0.1.13",

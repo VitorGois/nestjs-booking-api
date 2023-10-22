@@ -2,9 +2,9 @@ import { Type } from 'class-transformer';
 import { IsEmail, IsISO8601, IsNotEmpty, IsNumberString, IsObject, IsString, Length, ValidateNested } from 'class-validator';
 
 import { OrmPageDto } from '../orm/orm.dto.out';
-import { UserIdReadDto } from './user.dto.in';
+import { OrmUuidEntity } from '../orm/orm.entity';
 
-export class UserDto extends UserIdReadDto {
+export class UserDto extends OrmUuidEntity {
 
   @IsString()
   @IsNotEmpty()
@@ -15,7 +15,7 @@ export class UserDto extends UserIdReadDto {
 
   @IsNumberString()
   @Length(11, 14)
-  public tax_id!: string;
+  public taxId!: string;
 
   @IsString()
   @IsNotEmpty()

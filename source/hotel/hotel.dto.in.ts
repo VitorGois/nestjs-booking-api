@@ -16,7 +16,7 @@ export class HotelCreateDto {
   public address: AddressCreateDto;
 
   @IsNumberString() @Length(11, 11)
-  public contact_phone: string;
+  public contactPhone: string;
 
   @IsEnum(HotelRating)
   public rating: HotelRating;
@@ -31,7 +31,7 @@ export class HotelPageReadDto extends OrmPageReadDto {
 
   @IsOptional()
   @IsNumberString() @Length(11, 11)
-  public contact_phone?: string;
+  public contactPhone?: string;
 
   @IsOptional()
   @IsEnum(HotelRating)
@@ -55,7 +55,7 @@ export class HotelUpdateDto {
 
   @IsOptional()
   @IsNumberString() @Length(11, 11)
-  public contact_phone: string;
+  public contactPhone: string;
 
   @IsOptional()
   @IsEnum(HotelRating)

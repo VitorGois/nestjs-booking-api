@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
+import { Booking } from '../booking/booking.entity';
 import { Hotel } from '../hotel/hotel.entity';
 import { OrmUuidTimestampEntity } from '../orm/orm.entity';
 
@@ -7,13 +8,10 @@ import { OrmUuidTimestampEntity } from '../orm/orm.entity';
 export class Room extends OrmUuidTimestampEntity {
 
   @Column({ type: 'int2' })
-  public single_bed: number;
+  public singleBed: number;
 
   @Column({ type: 'int2' })
-  public double_bed: number;
-
-  @Column({ type: 'bool', default: false })
-  public assigned: boolean;
+  public doubleBed: number;
 
   @Column({ type: 'int2' })
   public number: number;
@@ -22,7 +20,10 @@ export class Room extends OrmUuidTimestampEntity {
   public price: number;
 
   @ManyToOne(() => Hotel, (hotel) => hotel.rooms)
-  @JoinColumn({ name: 'hotel_id' })
+  @JoinColumn({ name: 'hotelId' })
   public hotel: Hotel;
+
+  @OneToMany(() => Booking, (booking) => booking.user)
+  public bookings: Booking[];
 
 }

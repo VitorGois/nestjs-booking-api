@@ -26,10 +26,9 @@ export class HotelRoomService {
     return {
       id: hotelRoom.id,
       number: hotelRoom.number,
-      single_bed: hotelRoom.single_bed,
-      double_bed: hotelRoom.double_bed,
+      singleBed: hotelRoom.singleBed,
+      doubleBed: hotelRoom.doubleBed,
       price: hotelRoom.price,
-      assigned: hotelRoom.assigned,
     };
   }
 
@@ -57,7 +56,7 @@ export class HotelRoomService {
    * @param params
    */
   public async readHotelRoom(hotelId: string, params: HotelRoomPageReadDto): Promise<HotelRoomPageDto> {
-    const { single_bed, double_bed, min_price, max_price, ...pageAndSort } = params;
+    const { singleBed, doubleBed, minPrice, maxPrice, ...pageAndSort } = params;
     const { page, perPage, sort, order, count } = pageAndSort;
 
     let query = this.roomRepository
@@ -65,10 +64,10 @@ export class HotelRoomService {
       .leftJoinAndSelect('room.hotel', 'hotel')
       .where('hotel.id = :hotelId', { hotelId });
 
-    if (single_bed) query = query.andWhere('room.single_bed = :single_bed', { single_bed });
-    if (double_bed) query = query.andWhere('room.double_bed = :double_bed', { double_bed });
-    if (min_price) query = query.andWhere('room.price >= :min_price', { min_price });
-    if (max_price) query = query.andWhere('room.price <= :max_price', { max_price });
+    if (singleBed) query = query.andWhere('room.single_bed = :single_bed', { singleBed });
+    if (doubleBed) query = query.andWhere('room.double_bed = :double_bed', { doubleBed });
+    if (minPrice) query = query.andWhere('room.price >= :min_price', { minPrice });
+    if (maxPrice) query = query.andWhere('room.price <= :max_price', { maxPrice });
     if (order && sort) query = query.orderBy(sort, order);
 
     const offset = (page - 1) * perPage;

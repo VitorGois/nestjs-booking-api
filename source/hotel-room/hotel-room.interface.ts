@@ -1,7 +1,7 @@
 export interface HotelRoomCreateParams {
   hotelId: string;
-  single_bed: number;
-  double_bed: number;
+  singleBed: number;
+  doubleBed: number;
   number: number;
   price: number;
 }

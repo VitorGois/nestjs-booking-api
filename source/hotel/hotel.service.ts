@@ -28,7 +28,7 @@ export class HotelService {
       id: hotel.id,
       name: hotel.name,
       address: hotel.address,
-      contact_phone: hotel.contact_phone,
+      contactPhone: hotel.contactPhone,
       rating: hotel.rating,
     };
   }
@@ -61,7 +61,7 @@ export class HotelService {
    * @returns A promise that resolves to the retrieved HotelPageDto.
    */
   public async readHotel(params: HotelPageReadDto): Promise<HotelPageDto> {
-    const { name, contact_phone, rating, city, state, ...pageAndSort } = params;
+    const { name, contactPhone, rating, city, state, ...pageAndSort } = params;
     const { page, perPage, sort, order, count } = pageAndSort;
 
     let query = this.hotelRepository
@@ -69,7 +69,7 @@ export class HotelService {
       .leftJoinAndSelect('hotel.address', 'address');
 
     if (name) query = query.andWhere('LOWER(name) LIKE LOWER(:name)', { name: `%${name}%` });
-    if (contact_phone) query = query.andWhere('contact_phone = :contact_phone', { contact_phone });
+    if (contactPhone) query = query.andWhere('contactPhone = :contactPhone', { contactPhone });
     if (rating) query = query.andWhere('rating = :rating', { rating });
     if (city) query = query.andWhere('LOWER(address.city) LIKE LOWER(:city)', { city: `%${city}%` });
     if (state) query = query.andWhere('LOWER(address.state) LIKE LOWER(:state)', { state: `%${state}%` });
