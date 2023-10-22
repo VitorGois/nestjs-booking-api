@@ -26,8 +26,9 @@ export class BookingService {
   ) { }
 
   /**
-   *
-   * @param booking
+   * Converts a Booking entity to a BookingDto for data transfer.
+   * @param booking - The Booking entity to be converted.
+   * @returns The converted BookingDto.
    */
   private toDto(booking: Booking): BookingDto {
     return {
@@ -43,8 +44,12 @@ export class BookingService {
   }
 
   /**
-   *
-   * @param params
+   * Creates a new booking with the provided parameters.
+   * @param params - The parameters for creating the booking.
+   * @throws {BadRequestException} If the checkInDate is after the checkoutDate.
+   * @throws {NotFoundException} If the user, hotel or room with the provided ID is not found.
+   * @throws {ConflictException} If the booking is not available.
+   * @returns A promise that resolves to the created BookingDto.
    */
   public async createBooking(params: BookingCreateDto): Promise<BookingDto> {
     const { user, hotel, room, ...bookingParams } = params;
@@ -89,8 +94,9 @@ export class BookingService {
   }
 
   /**
-   *
-   * @param params
+   * Retrieves a page of bookings and returns it as a BookingPageDto.
+   * @param params - The parameters for retrieving the page of bookings.
+   * @returns A promise that resolves to the retrieved BookingPageDto.
    */
   public async readBooking(params: BookingPageReadDto): Promise<BookingPageDto> {
     const { hotel, room, user, status, ...pageAndSort } = params;
@@ -122,8 +128,10 @@ export class BookingService {
   }
 
   /**
-   *
-   * @param id
+   * Retrieves a booking by its ID and returns it as a BookingDto.
+   * @param id - The ID of the booking to be retrieved.
+   * @throws {NotFoundException} If the booking with the provided ID is not found.
+   * @returns A promise that resolves to the retrieved BookingDto.
    */
   public async readBookingById(id: string): Promise<BookingDto> {
     const booking = await this.bookingRepository.findOneByOrFail({ id });
@@ -131,9 +139,12 @@ export class BookingService {
   }
 
   /**
-   *
-   * @param id
-   * @param params
+   * Updates a booking by its ID.
+   * @param id - The ID of the booking to be updated.
+   * @param params - The parameters for updating the booking.
+   * @throws {NotFoundException} If the booking with the provided ID is not found.
+   * @throws {BadRequestException} If the room capacity is not enough.
+   * @returns A promise that resolves to the updated BookingDto.
    */
   public async updateBookingById(id: string, params: BookingUpdateDto): Promise<BookingDto> {
     const { guests, status } = params;
@@ -159,8 +170,10 @@ export class BookingService {
   }
 
   /**
-   *
-   * @param id
+   * Deletes a booking by its ID.
+   * @param id - The ID of the booking to be deleted.
+   * @throws {NotFoundException} If the booking with the provided ID is not found.
+   * @returns A promise that resolves to void.
    */
   public async deleteBookingById(id: string): Promise<void> {
     const booking = await this.bookingRepository.findOneByOrFail({ id });
@@ -168,8 +181,10 @@ export class BookingService {
   }
 
   /**
-   *
-   * @param params
+   * Given a set of parameters, verifies that the booking is available.
+   * @param params - The parameters to be verified.
+   * @throws {ConflictException} If the booking is not available.
+   * @returns A promise that resolves to void.
    */
   private async verifyBookingAvailability(params: BookingExistenceParams): Promise<void> {
     const { room, hotel, checkoutDate, checkInDate, guests } = params;
@@ -194,7 +209,9 @@ export class BookingService {
   /**
    * Given a room and the number of guests,
    * verifies that the room capacity is enough.
-   * @param params
+   * @param params - The parameters to be verified.
+   * @throws {BadRequestException} If the room capacity is not enough.
+   * @returns A promise that resolves to void.
    */
   public verifyRoomCapacity(params: BookingVerifyRoomCapacityParams): void {
     const { room, guests } = params;
