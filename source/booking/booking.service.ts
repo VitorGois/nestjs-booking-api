@@ -92,8 +92,33 @@ export class BookingService {
    *
    * @param params
    */
-  public readBooking(params: BookingPageReadDto): Promise<BookingPageDto> {
-    return Promise.resolve({ } as BookingPageDto);
+  public async readBooking(params: BookingPageReadDto): Promise<BookingPageDto> {
+    const { hotel, room, user, status, ...pageAndSort } = params;
+    const { page, perPage, sort, order, count } = pageAndSort;
+
+    let query = this.bookingRepository
+      .createQueryBuilder('booking');
+
+    if (hotel) query = query.andWhere('hotel.id = :hotel', { hotel });
+    if (room) query = query.andWhere('room.id = :room', { room });
+    if (user) query = query.andWhere('user.id = :user', { user });
+    if (status) query = query.andWhere('status = :status', { status });
+    if (order && sort) query = query.orderBy(sort, order);
+
+    const offset = (page - 1) * perPage;
+    query = query.skip(offset).take(perPage);
+
+    const data = await query.getMany();
+    const total = await(count ? query.getCount() : undefined);
+
+    return {
+      page,
+      perPage,
+      count: total,
+      order,
+      sort,
+      records: data.map((d) => this.toDto(d)),
+    };
   }
 
   /**
