@@ -10,7 +10,7 @@ export class UserDto extends IntersectionType(OrmUuidEntity, PickType(User, [ 'n
 
 export class UserPageDto extends OrmPageDto<UserDto> {
 
-  @ApiProperty({ isArray: true, type: UserDto })
+  @ApiProperty({ isArray: true, type: UserDto, description: 'User list' })
   @IsObject() @Type(() => UserDto)
   @ValidateNested({ each: true })
   public records: UserDto[];

@@ -6,7 +6,7 @@ import { User } from './user.entity';
 export class UserCreateDto extends PickType(User, [ 'name', 'email', 'taxId', 'phone', 'birthdate' ] as const) { }
 
 export class UserPageReadDto extends IntersectionType(
-  OrmPageReadDto,
+  PartialType(OrmPageReadDto),
   PartialType(PickType(User, [ 'name', 'email', 'taxId', 'phone', 'birthdate' ] as const)),
 ) { }
 
