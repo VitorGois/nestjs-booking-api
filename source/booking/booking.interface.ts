@@ -8,3 +8,8 @@ export interface BookingExistenceParams {
   checkInDate: Date;
   guests: number;
 }
+
+export interface BookingVerifyRoomCapacityParams {
+  room: Room;
+  guests: number;
+}

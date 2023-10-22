@@ -139,18 +139,12 @@ export class HotelService {
   }
 
   /**
-   * Deletes a hotel and its associated address by the provided ID.
-   *
-   * @param id - The ID of the hotel to be deleted.
-   * @throws {NotFoundException} If the hotel with the provided ID is not found.
-   * @throws {InternalServerErrorException} If an error occurs during the deletion process.
-   * @returns A promise that resolves once the hotel and address are deleted.
+   * TODO.
+   * @param id
    */
-  public async deleteHotelById(id: string): Promise<void> {
-    const hotel = await this.hotelRepository.findOneByOrFail({ id });
-    await this.hotelRepository.remove(hotel);
-    await this.addressRepository.remove(hotel.address);
-    // TODO: remove hotel rooms
+  public deleteHotelById(id: string): Promise<void> {
+    // TODO
+    return id as any;
   }
 
 }

@@ -9,7 +9,7 @@ import { BookingCreateDto, BookingPageReadDto, BookingUpdateDto } from './bookin
 import { BookingDto, BookingPageDto } from './booking.dto.out';
 import { Booking } from './booking.entity';
 import { BookingStatus } from './booking.enum';
-import { BookingExistenceParams } from './booking.interface';
+import { BookingExistenceParams, BookingVerifyRoomCapacityParams } from './booking.interface';
 
 @Injectable()
 export class BookingService {
@@ -92,9 +92,63 @@ export class BookingService {
    *
    * @param params
    */
+  public readBooking(params: BookingPageReadDto): Promise<BookingPageDto> {
+    return Promise.resolve({ } as BookingPageDto);
+  }
+
+  /**
+   *
+   * @param id
+   */
+  public async readBookingById(id: string): Promise<BookingDto> {
+    const booking = await this.bookingRepository.findOneByOrFail({ id });
+    return this.toDto(booking);
+  }
+
+  /**
+   *
+   * @param id
+   * @param params
+   */
+  public async updateBookingById(id: string, params: BookingUpdateDto): Promise<BookingDto> {
+    const { guests, status } = params;
+
+    const booking = await this.bookingRepository
+      .createQueryBuilder('booking')
+      .leftJoinAndSelect('booking.room', 'room')
+      .where('booking.id = :id', { id })
+      .getOne();
+
+    if (guests) {
+      this.verifyRoomCapacity({ room: booking.room, guests });
+      booking.guests = guests;
+    }
+
+    if (status) {
+      booking.status = status;
+    }
+
+    const updatedBooking = await this.bookingRepository.save(booking);
+
+    return this.toDto(updatedBooking);
+  }
+
+  /**
+   *
+   * @param id
+   */
+  public async deleteBookingById(id: string): Promise<void> {
+    const booking = await this.bookingRepository.findOneByOrFail({ id });
+    await this.bookingRepository.remove(booking);
+  }
+
+  /**
+   *
+   * @param params
+   */
   private async verifyBookingAvailability(params: BookingExistenceParams): Promise<void> {
     const { room, hotel, checkoutDate, checkInDate, guests } = params;
-    const { id: roomId, doubleBed, singleBed } = room;
+    const { id: roomId } = room;
 
     const existingBooking = await this.bookingRepository.findOne({
       where: {
@@ -109,46 +163,23 @@ export class BookingService {
       throw new ConflictException('checkInDate and checkOutDate period has already been reserved');
     }
 
+    this.verifyRoomCapacity({ room, guests });
+  }
+
+  /**
+   * Given a room and the number of guests,
+   * verifies that the room capacity is enough.
+   * @param params
+   */
+  public verifyRoomCapacity(params: BookingVerifyRoomCapacityParams): void {
+    const { room, guests } = params;
+    const { doubleBed, singleBed } = room;
+
     const roomCapacity = doubleBed * 2 + singleBed;
 
     if (roomCapacity < guests) {
       throw new BadRequestException(`guests must be less than or equal to room capacity (${roomCapacity})`);
     }
-  }
-
-  /**
-   *
-   * @param params
-   */
-  public readBooking(params: BookingPageReadDto): Promise<BookingPageDto> {
-    return Promise.resolve({ } as BookingPageDto);
-  }
-
-  /**
-   *
-   * @param id
-   */
-  public async readBookingById(id: string): Promise<BookingDto> {
-    const booking = await this.bookingRepository.findOneByOrFail({ id });
-    console.log(booking);
-    return this.toDto(booking);
-  }
-
-  /**
-   *
-   * @param id
-   * @param params
-   */
-  public async updateBookingById(id: string, params: BookingUpdateDto): Promise<BookingDto> {
-    return;
-  }
-
-  /**
-   *
-   * @param id
-   */
-  public deleteBookingById(id: string): Promise<void> {
-    return Promise.resolve();
   }
 
 }
