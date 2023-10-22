@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { HotelIdReadDto } from '../hotel/hotel.dto.in';
 import { RoomCreateDto, RoomIdsReadDto, RoomPageReadDto, RoomUpdateDto } from './room.dto.in';
@@ -15,6 +15,7 @@ export class RoomController {
   ) { }
 
   @Post()
+  @ApiOperation({ summary: 'Create a new room.', description: 'Create a new room associating to the specified hotel.' })
   @ApiResponse({ status: HttpStatus.CREATED, type: RoomDto, description: 'Room created.' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Invalid room data.' })
   @ApiResponse({ status: HttpStatus.CONFLICT, description: 'Room already exists.' })
@@ -24,6 +25,7 @@ export class RoomController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Read rooms.', description: 'Read rooms by pagination for specific hotel.' })
   @ApiResponse({ status: HttpStatus.OK, type: RoomPageDto, description: 'Room list.' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Invalid filter params.' })
   public getHotelRooms(@Param() params: HotelIdReadDto, @Query() query: RoomPageReadDto): Promise<RoomPageDto> {
@@ -32,6 +34,7 @@ export class RoomController {
   }
 
   @Get(':roomId')
+  @ApiOperation({ summary: 'Read room.', description: 'Read room by id for specific hotel.' })
   @ApiResponse({ status: HttpStatus.OK, type: RoomDto, description: 'Room found.' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Room not found.' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Invalid room ID.' })
@@ -40,6 +43,7 @@ export class RoomController {
   }
 
   @Patch(':roomId')
+  @ApiOperation({ summary: 'Update room.', description: 'Update room by id for specific hotel.' })
   @ApiResponse({ status: HttpStatus.OK, type: RoomDto, description: 'Room updated.' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Room not found.' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Invalid room ID or data.' })
@@ -48,6 +52,7 @@ export class RoomController {
   }
 
   @Delete(':roomId')
+  @ApiOperation({ summary: 'Delete room.', description: 'Delete room by id for specific hotel.' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Room deleted.' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Room not found.' })
