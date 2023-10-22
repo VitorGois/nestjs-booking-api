@@ -1,4 +1,4 @@
-export interface HotelRoomCreateParams {
+export interface RoomCreateParams {
   hotelId: string;
   singleBed: number;
   doubleBed: number;

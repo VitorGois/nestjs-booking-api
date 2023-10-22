@@ -38,7 +38,7 @@ export class OrmPageReadDto {
 
 export class OrmUuidReadDto {
 
-  @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
+  @ApiProperty({ example: '8b672d9f-cf5c-412e-90ff-c32d2ae8a096' })
   @IsUUID()
   public id!: string;
 

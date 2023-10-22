@@ -2,9 +2,9 @@ import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsISO8601, IsObject, ValidateNested } from 'class-validator';
 
 import { HotelDto } from '../hotel/hotel.dto.out';
-import { HotelRoomDto } from '../hotel-room/hotel-room.dto.out';
 import { OrmPageDto } from '../orm/orm.dto.out';
 import { OrmUuidEntity } from '../orm/orm.entity';
+import { RoomDto } from '../room/room.dto.out';
 import { UserDto } from '../user/user.dto.out';
 import { BookingStatus } from './booking.enum';
 
@@ -28,8 +28,8 @@ export class BookingDto extends OrmUuidEntity {
   @IsObject() @Type(() => HotelDto)
   public hotel: HotelDto;
 
-  @IsObject() @Type(() => HotelRoomDto)
-  public room: HotelRoomDto;
+  @IsObject() @Type(() => RoomDto)
+  public room: RoomDto;
 
 }
 

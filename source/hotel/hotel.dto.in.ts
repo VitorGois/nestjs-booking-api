@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsNumberString, IsObject, IsOptional, IsString, IsUUID, Length, ValidateNested } from 'class-validator';
 
@@ -71,6 +72,7 @@ export class HotelUpdateDto {
 
 export class HotelIdReadDto {
 
+  @ApiProperty({ example: '8b672d9f-cf5c-412e-90ff-c32d2ae8a096', description: 'Hotel ID' })
   @IsUUID()
   public hotelId: string;
 

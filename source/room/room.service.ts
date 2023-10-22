@@ -3,13 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Hotel } from '../hotel/hotel.entity';
-import { Room } from '../room/room.entity';
-import { HotelRoomIdsReadDto, HotelRoomPageReadDto, HotelRoomUpdateDto } from './hotel-room.dto.in';
-import { HotelRoomDto, HotelRoomPageDto } from './hotel-room.dto.out';
-import { HotelRoomCreateParams } from './hotel-room.interface';
+import { RoomIdsReadDto, RoomPageReadDto, RoomUpdateDto } from './room.dto.in';
+import { RoomDto, RoomPageDto } from './room.dto.out';
+import { Room } from './room.entity';
+import { RoomCreateParams } from './room.interface';
 
 @Injectable()
-export class HotelRoomService {
+export class RoomService {
 
   public constructor(
     @InjectRepository(Hotel)
@@ -19,10 +19,11 @@ export class HotelRoomService {
   ) { }
 
   /**
-   *
-   * @param hotelRoom
+   * Convert entity to DTO.
+   * @param hotelRoom Hotel room entity.
+   * @returns Hotel room DTO.
    */
-  private toDto(hotelRoom: Room): HotelRoomDto {
+  private toDto(hotelRoom: Room): RoomDto {
     return {
       id: hotelRoom.id,
       number: hotelRoom.number,
@@ -33,10 +34,13 @@ export class HotelRoomService {
   }
 
   /**
-   *
-   * @param params
+   * Create hotel room.
+   * @param params Hotel room create params.
+   * @returns Hotel room DTO.
+   * @throws {EntityNotFoundError} If hotel not found.
+   * @throws {EntityNotFoundError} If hotel room not found.
    */
-  public async createHotelRoom(params: HotelRoomCreateParams): Promise<HotelRoomDto> {
+  public async createRoom(params: RoomCreateParams): Promise<RoomDto> {
     const { hotelId, ...roomParams } = params;
 
     const hotel = await this.hotelRepository.findOneByOrFail({ id: hotelId });
@@ -51,11 +55,14 @@ export class HotelRoomService {
   }
 
   /**
-   *
-   * @param hotelId
-   * @param params
+   * Read hotel rooms.
+   * @param hotelId Hotel ID.
+   * @param params Hotel room page read params.
+   * @returns Hotel room page DTO.
+   * @throws {EntityNotFoundError} If hotel not found.
+   * @throws {EntityNotFoundError} If hotel room not found.
    */
-  public async readHotelRoom(hotelId: string, params: HotelRoomPageReadDto): Promise<HotelRoomPageDto> {
+  public async readRoom(hotelId: string, params: RoomPageReadDto): Promise<RoomPageDto> {
     const { singleBed, doubleBed, minPrice, maxPrice, ...pageAndSort } = params;
     const { page, perPage, sort, order, count } = pageAndSort;
 
@@ -87,11 +94,13 @@ export class HotelRoomService {
   }
 
   /**
-   *
-   * @param id
-   * @param params
+   * Read hotel room by ID.
+   * @param params Hotel room page read params.
+   * @returns Hotel room DTO.
+   * @throws {EntityNotFoundError} If hotel not found.
+   * @throws {EntityNotFoundError} If hotel room not found.
    */
-  public async readHotelRoomById(params: HotelRoomIdsReadDto): Promise<HotelRoomDto> {
+  public async readRoomById(params: RoomIdsReadDto): Promise<RoomDto> {
     const { hotelId, roomId } = params;
 
     const room = await this.roomRepository.findOneByOrFail({
@@ -103,14 +112,14 @@ export class HotelRoomService {
   }
 
   /**
-   *
-   * @param params
-   * @param body
+   * Update hotel room by ID.
+   * @param params Hotel room page read params.
+   * @param body Hotel room update params.
+   * @returns Hotel room DTO.
+   * @throws {EntityNotFoundError} If hotel not found.
+   * @throws {EntityNotFoundError} If hotel room not found.
    */
-  public async updateHotelRoomById(
-    params: HotelRoomIdsReadDto,
-    body: HotelRoomUpdateDto,
-  ): Promise<HotelRoomDto> {
+  public async updateRoomById(params: RoomIdsReadDto, body: RoomUpdateDto): Promise<RoomDto> {
     const { hotelId, roomId } = params;
 
     const room = await this.roomRepository.findOneByOrFail({
@@ -127,10 +136,12 @@ export class HotelRoomService {
   }
 
   /**
-   *
-   * @param params
+   * Delete hotel room by ID.
+   * @param params Hotel room page read params.
+   * @returns Void.
+   * @throws {EntityNotFoundError} If hotel not found.
    */
-  public async deleteHotelRoomById(params: HotelRoomIdsReadDto): Promise<void> {
+  public async deleteRoomById(params: RoomIdsReadDto): Promise<void> {
     const { hotelId, roomId } = params;
 
     const room = await this.roomRepository.findOneByOrFail({
