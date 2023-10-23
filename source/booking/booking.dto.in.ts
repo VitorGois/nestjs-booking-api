@@ -1,64 +1,43 @@
-import { IsEnum, IsInt, IsISO8601, IsOptional, IsPositive, IsUUID } from 'class-validator';
+import { ApiProperty, IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { IsUUID } from 'class-validator';
 
 import { OrmPageReadDto } from '../orm/orm.dto.in';
-import { BookingStatus } from './booking.enum';
+import { Booking } from './booking.entity';
 
-export class BookingCreateDto {
+export class BookingCreateDto extends PickType(Booking, [ 'guests', 'checkInDate', 'checkoutDate', 'status' ] as const) {
 
-  @IsInt() @IsPositive()
-  public guests: number;
-
-  @IsISO8601({ strict: true, strictSeparator: true })
-  public checkInDate: string;
-
-  @IsISO8601({ strict: true, strictSeparator: true })
-  public checkoutDate: string;
-
-  @IsEnum(BookingStatus)
-  public status: BookingStatus;
-
+  @ApiProperty({
+    type: String,
+    example: '8b672d9f-cf5c-412e-90ff-c32d2ae8a096',
+    description: 'User ID who made the booking',
+  })
   @IsUUID()
   public user: string;
 
+  @ApiProperty({
+    type: String,
+    example: '8b672d9f-cf5c-412e-90ff-c32d2ae8a096',
+    description: 'Hotel ID where the booking was made',
+  })
   @IsUUID()
   public hotel: string;
 
+  @ApiProperty({
+    type: String,
+    example: '8b672d9f-cf5c-412e-90ff-c32d2ae8a096',
+    description: 'Room ID where the booking was made',
+  })
   @IsUUID()
   public room: string;
 
 }
 
-export class BookingPageReadDto extends OrmPageReadDto {
+export class BookingPageReadDto extends IntersectionType(
+  PartialType(OrmPageReadDto),
+  PartialType(PickType(BookingCreateDto, [ 'user', 'hotel', 'room', 'status' ] as const)),
+) { }
 
-  @IsOptional()
-  @IsUUID()
-  public user?: string;
-
-  @IsOptional()
-  @IsUUID()
-  public hotel?: string;
-
-  @IsOptional()
-  @IsUUID()
-  public room?: string;
-
-  @IsOptional()
-  @IsEnum(BookingStatus)
-  public status?: BookingStatus;
-
-}
-
-export class BookingUpdateDto {
-
-  @IsOptional()
-  @IsInt() @IsPositive()
-  public guests?: number;
-
-  @IsOptional()
-  @IsEnum(BookingStatus)
-  public status?: BookingStatus;
-
-}
+export class BookingUpdateDto extends PartialType(PickType(Booking, [ 'guests', 'status' ] as const)) { }
 
 export class BookingIdReadDto {
 

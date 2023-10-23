@@ -46,10 +46,16 @@ export class HotelPageReadDto extends IntersectionType(
 
 }
 
-export class HotelUpdateDto extends IntersectionType(
-  PartialType(PickType(Hotel, [ 'name', 'contactPhone', 'rating' ] as const)),
-  PartialType(AddressUpdateDto),
-) { }
+export class HotelUpdateDto extends PartialType(PickType(Hotel, [ 'name', 'contactPhone', 'rating' ] as const)) {
+
+  @ApiProperty({
+    type: AddressUpdateDto,
+    description: 'Hotel address.',
+  })
+  @ValidateNested() @IsObject()
+  public address: AddressUpdateDto;
+
+}
 
 export class HotelIdReadDto {
 
