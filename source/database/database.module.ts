@@ -2,6 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { Address } from '../address/address.entity';
+import { Booking } from '../booking/booking.entity';
+import { Hotel } from '../hotel/hotel.entity';
+import { Room } from '../room/room.entity';
+import { User } from '../user/user.entity';
 import { DatabaseLogger } from './database.logger';
 
 @Module({
@@ -17,8 +22,11 @@ import { DatabaseLogger } from './database.logger';
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         entities: [
-          // eslint-disable-next-line unicorn/prefer-module
-          __dirname + '/../**/*.entity.ts',
+          Address,
+          Booking,
+          Hotel,
+          Room,
+          User,
         ],
         logger: new DatabaseLogger(),
         synchronize: true,
