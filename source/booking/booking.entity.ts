@@ -46,9 +46,8 @@ export class Booking extends OrmUuidTimestampEntity {
   })
   @IsEnum(BookingStatus)
   @Column({
-    // type: 'enum',
-    type: 'varchar',
-    // enum: BookingStatus,
+    type: 'enum',
+    enum: BookingStatus,
   })
   public status!: BookingStatus;
 

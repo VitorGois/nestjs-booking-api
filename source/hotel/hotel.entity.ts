@@ -32,7 +32,7 @@ export class Hotel extends OrmUuidTimestampEntity {
 
   @ApiProperty({
     enum: HotelRating,
-    example: HotelRating.FIVE_STARS,
+    example: HotelRating.ECO,
     description: 'Hotel rating.',
   })
   @IsEnum(HotelRating)
