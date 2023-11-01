@@ -5,28 +5,37 @@ services:
     build:
       context: .
     mem_limit: 400m
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=webapp-hotel
+      - PORT=8080
     ports:
       - 8080:8080
+    networks:
+      - postgres-booking
+    depends_on:
+      - postgres
 
   postgres:
-    container_name: postgres-hotel
+    container_name: postgres-booking
     image: postgres:15
     ports:
       - "5432:5432"
     volumes:
-      - /data/postgres-hotel:/data/postgres-hotel
+      - /data/postgres-booking:/data/postgres-booking
     environment:
-      - postgres_user=admin
-      - postgres_password=admin
-      - postgres_db=booking-api
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=webapp-hotel
     networks:
-      - postgres-hotel
+      - postgres-booking
  
   pgadmin:
     links:
-      - postgres:postgres-hotel
+      - postgres:postgres-booking
     container_name: pgadmin
     image: dpage/pgadmin4
     ports:
@@ -34,11 +43,13 @@ services:
     volumes:
       - /data/pgadmin:/root/.pgadmin
     environment:
-      - pgadmin_default_email=admin@admin.com
-      - pgadmin_default_password=admin
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
     networks:
-      - postgres-hotel
+      - postgres-booking
+    depends_on:
+      - postgres
  
 networks:
-  postgres-hotel:
+  postgres-booking:
     driver: bridge

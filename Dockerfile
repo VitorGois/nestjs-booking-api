@@ -20,7 +20,7 @@ RUN pnpm build
 #
 FROM node:20-slim as app
 WORKDIR /app
-EXPOSE 8081
+EXPOSE 8080
 
 # Copy built application
 COPY --from=build /build/dist /app
