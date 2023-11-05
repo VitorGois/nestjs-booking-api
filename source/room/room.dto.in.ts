@@ -1,4 +1,5 @@
 import { ApiProperty, IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsNumber, IsOptional, IsPositive, IsUUID } from 'class-validator';
 
 import { HotelIdReadDto } from '../hotel/hotel.dto.in';
@@ -13,11 +14,15 @@ export class RoomPageReadDto extends IntersectionType(
 ) {
 
   @ApiProperty({ example: 57, description: 'Minimum price', nullable: true })
-  @IsOptional() @IsNumber() @IsPositive()
+  @IsOptional()
+  @Transform(({ value }) => Number.parseInt(value as string, 10))
+  @IsNumber() @IsPositive()
   public minPrice?: number;
 
   @ApiProperty({ example: 123.45, description: 'Maximum price', nullable: true })
-  @IsOptional() @IsNumber() @IsPositive()
+  @IsOptional()
+  @Transform(({ value }) => Number.parseInt(value as string, 10))
+  @IsNumber() @IsPositive()
   public maxPrice?: number;
 
 }

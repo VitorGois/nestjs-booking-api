@@ -33,11 +33,4 @@ export class OrmUuidEntity {
 
 }
 
-export class OrmUuidTimestampEntity extends IntersectionType(OrmTimestampEntity, OrmUuidEntity) {
-
-  @ApiProperty({ example: '8b672d9f-cf5c-412e-90ff-c32d2ae8a096' })
-  @IsUUID()
-  @PrimaryGeneratedColumn('uuid')
-  public id!: string;
-
-}
+export class OrmUuidTimestampEntity extends IntersectionType(OrmTimestampEntity, OrmUuidEntity) { }

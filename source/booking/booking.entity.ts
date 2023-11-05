@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsISO8601, IsPositive, ValidateNested } from 'class-validator';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { IsEnum, IsInt, IsISO8601, IsPositive, IsUUID, ValidateNested } from 'class-validator';
+import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 import { Hotel } from '../hotel/hotel.entity';
 import { OrmUuidTimestampEntity } from '../orm/orm.entity';
@@ -11,6 +11,23 @@ import { BookingStatus } from './booking.enum';
 
 @Entity()
 export class Booking extends OrmUuidTimestampEntity {
+
+  @ApiProperty({ example: '8b672d9f-cf5c-412e-90ff-c32d2ae8a096' })
+  @IsUUID()
+  @PrimaryGeneratedColumn('uuid')
+  public id!: string;
+
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z' })
+  @IsISO8601()
+  @Index()
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+  public createdAt!: Date;
+
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z' })
+  @IsISO8601()
+  @Index()
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
+  public updatedAt!: Date;
 
   @ApiProperty({
     type: Number,

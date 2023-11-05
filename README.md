@@ -80,7 +80,7 @@ Install dependencies
   pnpm install
 ```
 
-Start the server
+Start the server and PostgreSQL database
 
 ```bash
   pnpm dev:postgres

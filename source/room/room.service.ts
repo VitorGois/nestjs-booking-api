@@ -71,10 +71,10 @@ export class RoomService {
       .leftJoinAndSelect('room.hotel', 'hotel')
       .where('hotel.id = :hotelId', { hotelId });
 
-    if (singleBed) query = query.andWhere('room.single_bed = :single_bed', { singleBed });
-    if (doubleBed) query = query.andWhere('room.double_bed = :double_bed', { doubleBed });
-    if (minPrice) query = query.andWhere('room.price >= :min_price', { minPrice });
-    if (maxPrice) query = query.andWhere('room.price <= :max_price', { maxPrice });
+    if (singleBed) query = query.andWhere('room.single_bed = :singleBed', { singleBed });
+    if (doubleBed) query = query.andWhere('room.double_bed = :doubleBed', { doubleBed });
+    if (minPrice) query = query.andWhere('room.price >= :minPrice', { minPrice });
+    if (maxPrice) query = query.andWhere('room.price <= :maxPrice', { maxPrice });
     if (order && sort) query = query.orderBy(sort, order);
 
     const offset = (page - 1) * perPage;

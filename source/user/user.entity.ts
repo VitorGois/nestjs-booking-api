@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsISO8601, IsNotEmpty, IsNumberString, IsString, Length } from 'class-validator';
-import { Column, Entity, OneToMany, Unique } from 'typeorm';
+import { IsEmail, IsISO8601, IsNotEmpty, IsNumberString, IsString, IsUUID, Length } from 'class-validator';
+import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 import { Booking } from '../booking/booking.entity';
 import { OrmUuidTimestampEntity } from '../orm/orm.entity';
@@ -9,6 +9,23 @@ import { OrmUuidTimestampEntity } from '../orm/orm.entity';
 @Unique([ 'email' ])
 @Unique([ 'taxId' ])
 export class User extends OrmUuidTimestampEntity {
+
+  @ApiProperty({ example: '8b672d9f-cf5c-412e-90ff-c32d2ae8a096' })
+  @IsUUID()
+  @PrimaryGeneratedColumn('uuid')
+  public id!: string;
+
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z' })
+  @IsISO8601()
+  @Index()
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+  public createdAt!: Date;
+
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z' })
+  @IsISO8601()
+  @Index()
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
+  public updatedAt!: Date;
 
   @ApiProperty({ example: 'John Doe', description: 'User name' })
   @IsString() @IsNotEmpty()

@@ -53,7 +53,8 @@ export class HotelUpdateDto extends PartialType(PickType(Hotel, [ 'name', 'conta
     description: 'Hotel address.',
   })
   @ValidateNested() @IsObject()
-  public address: AddressUpdateDto;
+  @IsOptional()
+  public address?: AddressUpdateDto;
 
 }
 
